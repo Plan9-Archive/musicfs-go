@@ -12,12 +12,6 @@ type AudioFile struct {
 	FileName, Suffix string
 }
 
-
-type TitleR []*AudioFile
-func (r TitleR)LessThan(other interface{}) bool {
-	return r[0].Title < other.(TitleR)[0].Title
-}
-
 type Query func(Map)
 type Index chan Query
 
@@ -39,10 +33,7 @@ func spawnIndexLoop(tree Map) Index {
 func buildAudioIndexes() {
 	if indexes == nil { indexes = &map[string]Index{} }
 
-//	ititle := spawnIndexLoop(createIndexAF(w.ais, func(a *AudioFile)interface{}{return a.Title}))
-//	_ = ititle
-	iartist := spawnIndexLoop(Map{})
-	(*indexes)["Artist"] = iartist
+	(*indexes)["Artist"] = spawnIndexLoop(Map{})
 }
 
 func audioAddToIndexes(af *AudioFile) {
