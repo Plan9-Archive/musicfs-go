@@ -1,13 +1,13 @@
 package main
 
 import (
-	. "bitbucket.org/taruti/taglib.go"
+	"bitbucket.org/taruti/taglib.go"
 	"go9p.googlecode.com/hg/p/srv"
 
 	)
 
 type AudioFile struct {
-	AudioTags
+	taglib.Tags
 	srv.File
 	FileName, Suffix string
 }

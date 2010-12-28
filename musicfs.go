@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "bitbucket.org/taruti/taglib.go"
+	"bitbucket.org/taruti/taglib.go"
 	"flag"
 	"fmt"
 	"go9p.googlecode.com/hg/p"
@@ -15,8 +15,6 @@ import (
 var addr = flag.String("addr", ":5640", "network address")
 var root = flag.String("root", ".", "root of filesystem to look for files")
 var debug= flag.Int("debug", 0, "debug level")
-
-//func Walk(root string, v Visitor, errors chan<- os.Error)
 
 type walker struct {
 	matching    map[string]int
@@ -55,9 +53,9 @@ func (w *walker)VisitFile(path string, fi *os.FileInfo) {
 	w.matching[suffix] = val+1
 
 	// Collect Metadata 
-	ai := GetTags(path, func(e string) { print("Cannot get metadata for "+e) })
+	ai := taglib.GetTags(path)
 	af := new(AudioFile)
-	af.AudioTags = *ai
+	af.Tags      = *ai
 	af.FileName  = path
 	af.Suffix    = suffix
 	af.Length    = uint64(fi.Size)
@@ -196,7 +194,7 @@ func main() {
 
 	s.Start(s)
 	log.Println("Starting listener")
-	srv.StartListener("tcp", *addr, &s.Srv)
+	s.StartNetListener("tcp", *addr)
 	return
 
 error:
