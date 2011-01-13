@@ -40,6 +40,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func httpmain() {
-    http.HandleFunc("/view/", viewHandler)
-    http.ListenAndServe(":8080", nil)
+	http.Handle("/", http.FileServer("static", ""))
+	http.HandleFunc("/view/", viewHandler)
+	http.ListenAndServe(":8080", nil)
 }
