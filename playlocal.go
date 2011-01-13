@@ -27,6 +27,7 @@ func openchanpl() chan func(*PL) {
 func kill(pl *PL) {
 	if pl.Pid > 0 {
 		syscall.Kill(pl.Pid, syscall.SIGTERM)
+		pl.Pid = -1
 	}
 }
 
