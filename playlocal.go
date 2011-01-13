@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"syscall"
 	)
@@ -34,6 +35,7 @@ func Pause() {
 }
 
 const MusicPlayer = "/usr/bin/mpg123"
+const Amixer = "/usr/bin/amixer"
 
 func Play(file string) {
 	plchan <- func(pl *PL) {
@@ -42,4 +44,13 @@ func Play(file string) {
 		pl.Pid,e = os.ForkExec(MusicPlayer, []string{MusicPlayer, file}, nil, "", nil)
 		if e!=nil { panic("ForkExec: "+e.String()) }
 	}
+}
+
+func VolumeModPercent(percent int) {
+	var minus string
+	if percent < 0 {
+		minus = "-"
+		percent = 0-percent
+	}
+	os.ForkExec(Amixer, []string{Amixer,"set","Master",fmt.Sprintf("%d%%%s",percent,minus)}, nil, "", nil)
 }
