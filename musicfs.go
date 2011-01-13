@@ -189,6 +189,7 @@ func main() {
 		d.Add(root, k, u, u, p.DMDIR|0555, d)
 		d.Populate(k, u)
 	}
+	go httpmain()
 	s := srv.NewFileSrv(root)
 	s.Dotu = true
 	s.Debuglevel = *debug
