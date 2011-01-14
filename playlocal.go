@@ -61,7 +61,7 @@ func PlayFile(file string) {
 }
 
 func VolumeModPercent(percent int) {
-	var minus string
+	var minus = "+"
 	if percent < 0 {
 		minus = "-"
 		percent = 0-percent
