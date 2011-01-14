@@ -35,7 +35,8 @@ func buildAudioIndexes() {
 		indexes = &map[string]Index{}
 	}
 
-	(*indexes)["Artist"] = spawnIndexLoop(Map{})
+	(*indexes)["Artist"] = spawnIndexLoop(MapSM{})
+	(*indexes)["Id"]     = spawnIndexLoop(MapI{})
 }
 
 func audioAddToIndexes(af *AudioFile) {
@@ -43,8 +44,9 @@ func audioAddToIndexes(af *AudioFile) {
 		if af.Artist == "" {
 			af.Artist = "@"
 		}
-		addToMap(af.Artist, af, m)
+		addToMapSM(af.Artist, af, m)
 	}
+	(*indexes)["Id"] <- func(m Map) { addToMapI(af.Path, af, m) }
 }
 
 var indexes *map[string]Index

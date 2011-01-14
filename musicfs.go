@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 )
 
@@ -116,7 +117,16 @@ func (id *IndexDir) Populate(key string, u user) {
 	id.Index <- func(m Map) { rc <- mapKeysS(m) }
 	for _, aname := range <-rc {
 		ir := new(IndexRes)
-		ir.F = func(m Map) []*AudioFile { return m[aname] }
+		ir.F = func(m Map) []*AudioFile {
+			switch m := m.(type) {
+			case MapSM:
+				return m[aname]
+			case MapI:
+				d,_ := strconv.Atoi64(aname)
+				return []*AudioFile{m[uint64(d)]}
+			}
+			return []*AudioFile{}
+		}
 		ir.Index = id.Index
 		ir.Add(&id.File, aname, u, u, p.DMDIR|0555, ir)
 		ir.Populate(u)
@@ -184,6 +194,7 @@ func main() {
 	// Index directories
 	log.Println("Top-level indexes", len(*indexes))
 	for k, v := range *indexes {
+		if k == "Id" { continue }
 		d := new(IndexDir)
 		d.Index = v
 		d.Add(root, k, u, u, p.DMDIR|0555, d)
