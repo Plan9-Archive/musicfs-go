@@ -8,6 +8,8 @@
 <script type="text/javascript" src="dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 <script type="text/javascript">
 dojo.require("dijit.form.Button");
+dojo.require('dojo.rpc.JsonService');
+var srv = new dojo.rpc.JsonService('/post');
 function message() {
 alert("Hello world");
 }
@@ -24,6 +26,16 @@ alert("Hello world");
 		content: {}
 		});
       </script>
+  </button>
+
+  <button dojoType="dijit.form.Button" id="volumeUp">
+      +
+      <script type="dojo/method" event="onClick">srv.volume(5)</script>
+  </button>
+
+  <button dojoType="dijit.form.Button" id="volumeDown">
+      -
+      <script type="dojo/method" event="onClick">srv.volume(-5)</script>
   </button>
 
 </body>
