@@ -60,6 +60,7 @@ func (w *walker) VisitFile(path string, fi *os.FileInfo) {
 	af.FileName = path
 	af.Suffix = suffix
 	af.Length = uint64(fi.Size)
+	af.Path   = uint64(w.nfiles)
 	audioAddToIndexes(af)
 	// FIXME
 	//	w.ais = append(w.ais, AudioFile{})

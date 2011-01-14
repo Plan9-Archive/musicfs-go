@@ -31,14 +31,27 @@ func kill(pl *PL) {
 	}
 }
 
-func Pause() {
+func Stop() {
 	plchan <- kill
 }
 
 const MusicPlayer = "/usr/bin/mpg123"
 const Amixer = "/usr/bin/amixer"
 
-func Play(file string) {
+func PlayId(id int) string {
+	reply := make(chan *AudioFile)
+	(*indexes)["Id"] <- func(mr Map) {
+		m := mr.(MapI)
+		reply <- m[uint64(id)]
+	}
+	af :=<- reply
+	if af!=nil {
+		PlayFile(af.FileName)
+	}
+	return ""
+}
+
+func PlayFile(file string) {
 	plchan <- func(pl *PL) {
 		kill(pl)
 		var e os.Error

@@ -1,7 +1,7 @@
 package main
 
 import (
-//    "fmt"
+	"bitbucket.org/taruti/http_jsonrpc.go"
     "http"
     "io/ioutil"
     "os"
@@ -40,6 +40,11 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func httpmain() {
+	s := http_jsonrpc.New()
+	s.Register("play", PlayId)
+	s.Register("stop", Stop)
+	s.Register("volume", VolumeModPercent)
+	http.Handle("/post", s)
 	http.Handle("/", http.FileServer("static", ""))
 	http.HandleFunc("/view/", viewHandler)
 	http.ListenAndServe(":8080", nil)
