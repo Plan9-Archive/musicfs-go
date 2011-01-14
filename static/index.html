@@ -8,25 +8,29 @@
 <script type="text/javascript" src="dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 <script type="text/javascript">
 dojo.require("dijit.form.Button");
+dojo.require("dijit.form.TextBox");
 dojo.require('dojo.rpc.JsonService');
 var srv = new dojo.rpc.JsonService('/post');
 function message() {
 alert("Hello world");
 }
+function search(){
+var res=srv.search(dijit.byId("findme").attr("value")) ;
+console.log(res)
+return false
+}
+
 </script>
 <body>
 
-  <button dojoType="dijit.form.Button" id="helloButton">
-      Play
-      <script type="dojo/method" event="onClick">
-		dojo.xhrPost({
-		url: '/post',
-		load: playCallback,
-		error: playError,
-		content: {}
-		});
-      </script>
-  </button>
+<form onsubmit="return search()">
+<label>Search:</label>
+<input type="text" name="findme" value="baz" dojoType="dijit.form.TextBox"
+        id="findme" 
+        <label for="findme">
+            te(s|x)tbox
+        </label>
+</form>
 
   <button dojoType="dijit.form.Button" id="volumeUp">
       +
@@ -37,6 +41,7 @@ alert("Hello world");
       -
       <script type="dojo/method" event="onClick">srv.volume(-5)</script>
   </button>
+<br />
 
 </body>
 </html>
